@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Applications</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+        }
+
+        .header {
+            background: #0c2340;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logout-btn {
+            background: #ffd700;
+            color: #0c2340;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-box, .filter-select {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .applications-table {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 1000px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            white-space: nowrap;
+        }
+
+        th {
+            background: #0c2340;
+            color: white;
+            font-weight: 500;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            min-width: 200px;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn {
+            background: #0c2340;
+            color: white;
+        }
+
+        .view-btn:hover {
+            background: #0a1b30;
+        }
+
+        .approve-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .approve-btn:hover {
+            background: #218838;
+        }
+
+        .reject-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .reject-btn:hover {
+            background: #c82333;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 600;
+            color: #0c2340;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <h2>Admin Dashboard</h2>
+            <span id="welcomeMessage"></span>
+        </div>
+        <a href="home.html"> <button class="logout-btn">Logout</button></a>
+    </header>
+
+    <div class="container">
+        <div class="stats-cards">
+            <div class="stat-card">
+                <div class="stat-number">125</div>
+                <div class="stat-label">Total Applications</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">45</div>
+                <div class="stat-label">Pending</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">70</div>
+                <div class="stat-label">Approved</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">10</div>
+                <div class="stat-label">Rejected</div>
+            </div>
+        </div>
+
+        <div class="dashboard-header">
+            <h2>Application List</h2>
+            <div class="search-filter">
+                <input type="text" class="search-box" placeholder="Search by name..." onkeyup="searchTable()">
+                <select class="filter-select" onchange="filterTable()">
+                    <option value="all">All Applications</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="applications-table">
+            <table id="applicationsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Student Name</th>
+                        <th>Parent Name</th>
+                        <th>Grade</th>
+                        <th>Contact</th>
+                        <th>Email</th>
+                        <th>Application Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="applicationTableBody">
+                    <!-- Data will be populated dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- <script>
+        // Check login status
+        function checkLoginStatus() {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Update welcome message
+            const username = localStorage.getItem('username');
+            document.getElementById('welcomeMessage').textContent = 
+                `Welcome, ${username}!`;
+        }
+
+        // Handle logout
+        function handleLogout() {
+            // Clear login status
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            
+            // Redirect to login page
+            window.location.href = 'login.html';
+        }
+
+        // Check login status when page loads
+        window.onload = function() {
+            checkLoginStatus();
+            loadApplications(); // Your existing function to load applications
+        }
+
+        // Update the logout button onclick
+        document.querySelector('.logout-btn').onclick = handleLogout;
+
+        // Load and display applications
+        function loadApplications() {
+            const applications = JSON.parse(localStorage.getItem('applications')) || [];
+            const tableBody = document.getElementById('applicationTableBody');
+            
+            // Clear existing table data
+            tableBody.innerHTML = '';
+
+            applications.forEach(app => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${app.id}</td>
+                    <td>${app.studentName}</td>
+                    <td>${app.parentName}</td>
+                    <td>${app.grade}</td>
+                    <td>${app.phone}</td>
+                    <td>${app.email}</td>
+                    <td>${app.applicationDate}</td>
+                    <td>
+                        <span class="status-badge status-${app.status.toLowerCase()}">${app.status}</span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn view-btn" onclick="viewApplication('${app.id}')">
+                                View
+                            </button>
+                            ${app.status === 'Pending' ? `
+                                <button class="action-btn approve-btn" onclick="updateStatus('${app.id}', 'Approved')">
+                                    Approve
+                                </button>
+                                <button class="action-btn reject-btn" onclick="updateStatus('${app.id}', 'Rejected')">
+                                    Reject
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Update statistics
+            updateStats({
+                total: applications.length,
+                pending: applications.filter(app => app.status === 'Pending').length,
+                approved: applications.filter(app => app.status === 'Approved').length,
+                rejected: applications.filter(app => app.status === 'Rejected').length
+            });
+        }
+
+        // Update statistics cards
+        function updateStats(stats) {
+            document.querySelector('.stats-cards').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${stats.total}</div>
+                    <div class="stat-label">Total Applications</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.pending}</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.approved}</div>
+                    <div class="stat-label">Approved</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.rejected}</div>
+                    <div class="stat-label">Rejected</div>
+                </div>
+            `;
+        }
+
+        // Update application status
+        function updateStatus(id, newStatus) {
+            const applications = JSON.parse(localStorage.getItem('applications'));
+            const appIndex = applications.findIndex(app => app.id === id);
+            
+            if (appIndex !== -1) {
+                applications[appIndex].status = newStatus;
+                localStorage.setItem('applications', JSON.stringify(applications));
+                loadApplications(); // Refresh the table
+            }
+        }
+
+        // View application details
+        function viewApplication(id) {
+            const applications = JSON.parse(localStorage.getItem('applications'));
+            const app = applications.find(app => app.id === id);
+            
+            if (app) {
+                alert(`
+                    Application Details:
+                    ID: ${app.id}
+                    Student: ${app.studentName}
+                    Parent: ${app.parentName}
+                    Email: ${app.email}
+                    Phone: ${app.phone}
+                    Grade: ${app.grade}
+                    DOB: ${app.dob}
+                    Status: ${app.status}
+                    Applied: ${app.applicationDate}
+                `);
+            }
+        }
+
+        // Search functionality
+        function searchTable() {
+            const input = document.querySelector('.search-box');
+            const filter = input.value.toUpperCase();
+            const tbody = document.getElementById('applicationTableBody');
+            const tr = tbody.getElementsByTagName('tr');
+
+            for (let i = 0; i < tr.length; i++) {
+                const tdName = tr[i].getElementsByTagName('td')[1]; // Student Name column
+                if (tdName) {
+                    const txtValue = tdName.textContent || tdName.innerText;
+                    tr[i].style.display = txtValue.toUpperCase().includes(filter) ? '' : 'none';
+                }
+            }
+        }
+
+        // Filter functionality
+        function filterTable() {
+            const select = document.querySelector('.filter-select');
+            const filter = select.value.toUpperCase();
+            const tbody = document.getElementById('applicationTableBody');
+            const tr = tbody.getElementsByTagName('tr');
+
+            for (let i = 0; i < tr.length; i++) {
+                const tdStatus = tr[i].getElementsByTagName('td')[8]; // Status column
+                if (tdStatus) {
+                    const txtValue = tdStatus.textContent || tdStatus.innerText;
+                    tr[i].style.display = (filter === 'ALL' || txtValue.toUpperCase().includes(filter)) ? '' : 'none';
+                }
+            }
+        }
+    </script> -->
+</body>
+</html>

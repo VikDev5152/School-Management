@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Now - Maharishi Vidya Mandir</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-image: linear-gradient(rgba(12,35,64,0.95), rgba(12,35,64,0.95)), url('images/library.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #0c2340;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #0c2340;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #ffd700;
+            color: #0c2340;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+        }
+
+        .submit-btn:hover {
+            background-color: #0c2340;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Add these new validation styles */
+        .error {
+            color: #ff0000;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .form-control.invalid {
+            border-color: #ff0000;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .success-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-align: center;
+            min-width: 300px;
+        }
+
+        /* Success Animation */
+        .success-checkmark {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+        }
+
+        .check-icon {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            border-radius: 50%;
+            box-sizing: content-box;
+            border: 4px solid #4CAF50;
+        }
+
+        .check-icon::before {
+            top: 3px;
+            left: -2px;
+            width: 30px;
+            transform-origin: 100% 50%;
+            border-radius: 100px 0 0 100px;
+        }
+
+        .check-icon::after {
+            top: 0;
+            left: 30px;
+            width: 60px;
+            transform-origin: 0 50%;
+            border-radius: 0 100px 100px 0;
+            animation: rotate-circle 4.25s ease-in;
+        }
+
+        .check-icon::before, .check-icon::after {
+            content: '';
+            height: 100px;
+            position: absolute;
+            background: #FFFFFF;
+            transform: rotate(-45deg);
+        }
+
+        .icon-line {
+            height: 5px;
+            background-color: #4CAF50;
+            display: block;
+            border-radius: 2px;
+            position: absolute;
+            z-index: 10;
+        }
+
+        .icon-line.line-tip {
+            top: 46px;
+            left: 14px;
+            width: 25px;
+            transform: rotate(45deg);
+            animation: icon-line-tip 0.75s;
+        }
+
+        .icon-line.line-long {
+            top: 38px;
+            right: 8px;
+            width: 47px;
+            transform: rotate(-45deg);
+            animation: icon-line-long 0.75s;
+        }
+
+        .icon-circle {
+            top: -4px;
+            left: -4px;
+            z-index: 10;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            position: absolute;
+            box-sizing: content-box;
+            border: 4px solid rgba(76, 175, 80, .5);
+        }
+
+        .icon-fix {
+            top: 8px;
+            width: 5px;
+            left: 26px;
+            z-index: 1;
+            height: 85px;
+            position: absolute;
+            transform: rotate(-45deg);
+            background-color: #FFFFFF;
+        }
+
+        @keyframes rotate-circle {
+            0% { transform: rotate(-45deg); }
+            5% { transform: rotate(-45deg); }
+            12% { transform: rotate(-405deg); }
+            100% { transform: rotate(-405deg); }
+        }
+
+        @keyframes icon-line-tip {
+            0% { width: 0; left: 1px; top: 19px; }
+            54% { width: 0; left: 1px; top: 19px; }
+            70% { width: 50px; left: -8px; top: 37px; }
+            84% { width: 17px; left: 21px; top: 48px; }
+            100% { width: 25px; left: 14px; top: 45px; }
+        }
+
+        @keyframes icon-line-long {
+            0% { width: 0; right: 46px; top: 54px; }
+            65% { width: 0; right: 46px; top: 54px; }
+            84% { width: 55px; right: 0px; top: 35px; }
+            100% { width: 47px; right: 8px; top: 38px; }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #f0f0f0;
+            border-radius: 2px;
+            margin-top: 20px;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: #4CAF50;
+            border-radius: 2px;
+            transition: width 2s ease-in-out;
+        }
+
+        .modal-buttons {
+            margin-top: 20px;
+        }
+
+        .modal-button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .continue-btn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .continue-btn:hover {
+            background: #45a049;
+        }
+    </style>
+    <script>
+        function validateForm(event) {
+            event.preventDefault();
+            
+            // Get form elements
+            const form = event.target;
+            const className = form.class.value;
+            const firstName = form.firstname.value;
+            const lastName = form.lastname.value; 
+            const dob = form.dob.value;
+
+            // Validate class selection
+            if (!className) {
+                alert("Please select a class");
+                return false;
+            }
+
+            // Validate first name
+            if (!firstName || firstName.length < 2) {
+                alert("Please enter a valid first name (minimum 2 characters)");
+                return false;
+            }
+
+            // Validate last name
+            if (!lastName || lastName.length < 2) {
+                alert("Please enter a valid last name (minimum 2 characters)");
+                return false;
+            }
+
+            // Validate date of birth
+            if (!dob) {
+                alert("Please select date of birth");
+                return false;
+            }
+
+            // If all validations pass
+            alert("Form submitted successfully!");
+            window.location.href = "hjdbd.html";
+            return true;
+        }
+
+        // Add form submit event listener
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            form.addEventListener('submit', validateForm);
+        });
+    </script>
+</head>
+<body>
+    <!-- Add header for navigation -->
+    <header class="header" style="background-color: #0c2340; color: #fff; padding: 10px 0;">
+        <div class="container" style="width: 90%; max-width: 1200px; margin: 0 auto;">
+            <div class="top-bar" style="display: flex; justify-content: flex-end; align-items: center;">
+                <div class="quick-links">
+                    <a href="home.html" style="margin-left: 20px; color: #000000; text-decoration: none;">HOME</a>
+                    <a href="login.html" style="margin-left: 20px; color: #000000; text-decoration: none;">LOGIN</a>
+                    <a href="register.html" style="margin-left: 20px; color: #000000; text-decoration: none;">REGISTER</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Add margin-top to container -->
+    <div class="container" style="margin-top: 80px;">
+        <h1>Application Form</h1>
+        <form id="applicationForm" onsubmit="return validateAndSubmit(event)">
+            <div class="form-group">
+                <label for="studentName">Student Name:</label>
+                <input type="text" class="form-control" id="studentName" name="studentName" required>
+                <span class="error" id="studentName-error">Name must contain only letters</span>
+            </div>
+
+            <!-- <div class="form-group">
+                <label for="surnameName">Surname Name:</label>
+                <input type="text" class="form-control" id="surnameName" name="surnameName" required>
+                <span class="error" id="surnameName-error">Name must contain only letters</span>
+            </div> -->
+
+            <div class="form-group">
+                <label for="parentName">Parent Name:</label>
+                <input type="text" class="form-control" id="parentName" name="parentName" required>
+                <span class="error" id="parentName-error">Name must contain only letters</span>
+            </div>
+           
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+                <span class="error" id="email-error">Please enter a valid email address</span>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" class="form-control" id="phone" name="phone" required>
+                <span class="error" id="phone-error">Please enter a valid 10-digit phone number</span>
+            </div>
+
+            <div class="form-group">
+                <label for="grade">Grade Applying For:</label>
+                <select class="form-control" id="grade" name="grade" required>
+                    <option value="">Select Grade</option>
+                    <option value="1">Grade 1</option>
+                    <option value="2">Grade 2</option>
+                    <option value="3">Grade 3</option>
+                    <option value="4">Grade 4</option>
+                    <option value="5">Grade 5</option>
+                    <option value="6">Grade 6</option>
+                    <option value="7">Grade 7</option>
+                    <option value="8">Grade 8</option>
+                    <option value="9">Grade 9</option>
+                    <option value="10">Grade 10</option>
+                    <option value="11">Grade 11</option>
+                    <option value="12">Grade 12</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <span class="error" id="grade-error">Please select a grade</span>
+            </div>
+
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" class="form-control" id="dob" name="dob" required>
+                <span class="error" id="dob-error">Please enter a valid date</span>
+            </div>
+
+            <a href="home.html"><button>Submit</button></a> 
+        </form>
+    </div>
+
+    <script>
+        // Validation Functions
+        function validateName(inputId , allowSpaces=true) {
+            const input = document.getElementById(inputId);
+            const error = document.getElementById(`${inputId}-error`);
+            const regex = allowSpaces ? /^[A-Za-z\s]+$/ : /^[A-Za-z]+$/;
+
+            if (!regex.test(input.value)) {
+                input.classList.add('invalid');
+                error.style.display = 'block';
+                return false;
+            } else {
+                input.classList.remove('invalid');
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateEmail() {
+            const email = document.getElementById('email');
+            const error = document.getElementById('email-error');
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!regex.test(email.value)) {
+                email.classList.add('invalid');
+                error.style.display = 'block';
+                return false;
+            } else {
+                email.classList.remove('invalid');
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validatePhone() {
+            const phone = document.getElementById('phone');
+            const error = document.getElementById('phone-error');
+            const regex = /^[0-9]{10}$/;
+
+            if (!regex.test(phone.value)) {
+                phone.classList.add('invalid');
+                error.style.display = 'block';
+                return false;
+            } else {
+                phone.classList.remove('invalid');
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateDate() {
+            const dob = document.getElementById('dob');
+            const error = document.getElementById('dob-error');
+            const selectedDate = new Date(dob.value);
+            const today = new Date();
+
+            if (!dob.value || selectedDate > today) {
+                dob.classList.add('invalid');
+                error.style.display = 'block';
+                return false;
+            } else {
+                dob.classList.remove('invalid');
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateGrade() {
+            const grade = document.getElementById('grade');
+            const error = document.getElementById('grade-error');
+
+            if (!grade.value) {
+                grade.classList.add('invalid');
+                error.style.display = 'block';
+                return false;
+            } else {
+                grade.classList.remove('invalid');
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        // Success Modal Functions
+        function showSuccessModal() {
+            document.getElementById('modalOverlay').style.display = 'block';
+            document.getElementById('successModal').style.display = 'block';
+            
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = '100%';
+
+            setTimeout(() => {
+                redirectNow();
+            }, 3000);
+        }
+
+        function redirectNow() {
+            window.location.href = 'home.html';
+        }
+
+        // Create an array to store applications if it doesn't exist
+        if (!localStorage.getItem('applications')) {
+            localStorage.setItem('applications', JSON.stringify([]));
+        }
+
+        // Form Submission
+        function validateAndSubmit(event) {
+            event.preventDefault();
+            
+            const isStudentNameValid = validateName('studentName');
+            const isParentNameValid = validateName('parentName');
+            const isEmailValid = validateEmail();
+            const isPhoneValid = validatePhone();
+            const isDateValid = validateDate();
+            const isGradeValid = validateGrade();
+
+            if (isStudentNameValid && 
+                isParentNameValid && 
+                isEmailValid && 
+                isPhoneValid && 
+                isDateValid && 
+                isGradeValid) {
+                
+                // Get form data
+                const formData = {
+                    id: 'APP' + Date.now(),
+                    studentName: document.getElementById('studentName').value,
+                    parentName: document.getElementById('parentName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    grade: document.getElementById('grade').value,
+                    dob: document.getElementById('dob').value,
+                    status: 'Pending',
+                    applicationDate: new Date().toLocaleDateString()
+                };
+
+                // Get existing applications
+                const applications = JSON.parse(localStorage.getItem('applications'));
+                
+                // Add new application
+                applications.push(formData);
+                
+                // Save back to localStorage
+                localStorage.setItem('applications', JSON.stringify(applications));
+
+                showSuccessModal();
+                return false;
+            }
+            return false;
+        }
+
+        // Add event listeners for real-time validation
+        document.getElementById('studentName').addEventListener('input', () => validateName('studentName'));
+        document.getElementById('surnameName').addEventListener('input', () => validateName('surnameName'));
+        document.getElementById('parentName').addEventListener('input', () => validateName('parentName'));
+        document.getElementById('email').addEventListener('input', validateEmail);
+        document.getElementById('phone').addEventListener('input', validatePhone);
+        document.getElementById('dob').addEventListener('input', validateDate);
+        document.getElementById('grade').addEventListener('change', validateGrade);
+
+        // Prevent non-numeric input in phone field
+        document.getElementById('phone').addEventListener('keypress', (e) => {
+            if (!/[0-9]/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+    </script>
+
+    <!-- Add this before closing body tag -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="success-modal" id="successModal">
+        <div class="success-checkmark">
+            <div class="check-icon">
+                <span class="icon-line line-tip"></span>
+                <span class="icon-line line-long"></span>
+                <div class="icon-circle"></div>
+                <div class="icon-fix"></div>
+            </div>
+        </div>
+        <h3 style="color: #4CAF50; margin-bottom: 10px;">Application Submitted!</h3>
+        <p id="modalMessage" style="margin-bottom: 20px;">Your application has been submitted successfully!</p>
+        <div class="progress-bar">
+            <div class="progress" id="progressBar"></div>
+        </div>
+        <div class="modal-buttons">
+            <button class="modal-button continue-btn" onclick="redirectNow()">Continue Now</button>
+        </div>
+    </div>
+</body>
+</html>

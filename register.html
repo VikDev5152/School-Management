@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration - Maharishi Vidya Mandir</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-image: linear-gradient(rgba(12,35,64,0.9), rgba(12,35,64,0.9)), url('images/classroom.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 80px auto;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        h2 {
+            color: #0c2340;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #0c2340;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .btn-submit {
+            background-color: #ffd700;
+            color: #0c2340;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #0c2340;
+            color: #fff;
+        }
+
+        /* Header styles */
+        .header {
+            background-color: #0c2340;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .quick-links {
+            text-align: right;
+            padding: 10px 20px;
+        }
+
+        .quick-links a {
+            margin-left: 20px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .quick-links a:hover {
+            color: #ffd700;
+        }
+
+        /* Add these new styles */
+        .error {
+            color: #ff0000;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .form-group input.invalid {
+            border-color: #ff0000;
+        }
+
+        .password-requirements {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="quick-links">
+            <a href="home.html">HOME</a>
+            <a href="applynow.html">ADMISSION</a>
+            <a href="login.html">LOGIN</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2>Admin Registration</h2>
+        <form action="#" method="POST" id="registrationForm" onsubmit="return validateAndSubmit(event, 'registration')">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" onkeyup="validateUsername()" required>
+                <span class="error" id="username-error">Username must contain only letters</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" onkeyup="validateEmail()" required>
+                <span class="error" id="email-error">Please enter a valid email address</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" onkeyup="validatePassword()" required>
+                <div class="password-requirements">
+                    Password must contain:
+                    <ul>
+                        <li>At least 8 characters</li>
+                        <li>One uppercase letter</li>
+                        <li>One lowercase letter</li>
+                        <li>One number</li>
+                    </ul>
+                </div>
+                <span class="error" id="password-error">Password doesn't meet requirements</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" onkeyup="validateConfirmPassword()" required>
+                <span class="error" id="confirm-password-error">Passwords do not match</span>
+            </div>
+            
+            <button type="submit" class="btn-submit">Register</button>
+        </form>
+    </div>
+
+    <script>
+        function validateUsername() {
+            const username = document.getElementById('username');
+            const error = document.getElementById('username-error');
+            const regex = /^[A-Za-z\s]+$/;
+
+            if (!regex.test(username.value)) {
+                username.classList.add('invalid');
+                error.style.display = 'block';
+                return false;
+            } else {
+                username.classList.remove('invalid');
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateEmail() {
+            const email = document.getElementById('email');
+            const error = document.getElementById('email-error');
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!regex.test(email.value)) {
+                email.classList.add('invalid');
+                error.style.display = 'block';
+                return false;
+            } else {
+                email.classList.remove('invalid');
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validatePassword() {
+            const password = document.getElementById('password');
+            const error = document.getElementById('password-error');
+            // Password must contain at least 6 characters, one uppercase, one lowercase, and one number
+            const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+
+            if (!regex.test(password.value)) {
+                password.classList.add('invalid');
+                error.style.display = 'block';
+                return false;
+            } else {
+                password.classList.remove('invalid');
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateConfirmPassword() {
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirm_password');
+            const error = document.getElementById('confirm-password-error');
+
+            if (password.value !== confirmPassword.value) {
+                confirmPassword.classList.add('invalid');
+                error.style.display = 'block';
+                return false;
+            } else {
+                confirmPassword.classList.remove('invalid');
+                error.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateAndSubmit(event, formType) {
+            event.preventDefault(); // Prevent default form submission
+            
+            const isUsernameValid = validateUsername();
+            const isEmailValid = validateEmail();
+            const isPasswordValid = validatePassword();
+            const isConfirmPasswordValid = validateConfirmPassword();
+
+            if (isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+                // Show success message
+                alert('Registration successful!');
+                
+                // Redirect to home page
+                window.location.href = 'home.html';
+                return false; // Prevent form submission
+            }
+            return false; // Prevent form submission if validation fails
+        }
+
+        // Add event listeners for real-time validation
+        document.getElementById('username').addEventListener('input', validateUsername);
+        document.getElementById('email').addEventListener('input', validateEmail);
+        document.getElementById('password').addEventListener('input', validatePassword);
+        document.getElementById('confirm_password').addEventListener('input', validateConfirmPassword);
+    </script>
+</body>
+</html>

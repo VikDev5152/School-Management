@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maharishi Vidya Mandir</title>
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Utility classes */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #ffd700;
+    color: #0c2340;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0c2340;
+    color: #fff;
+}
+
+/* Header styles */
+.header {
+    background-color: #0c2340;
+    color: #fff;
+    padding: 10px 0;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.quick-links a {
+    margin-left: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.quick-links a:hover {
+    color: #ffd700;
+}
+
+/* Navigation styles */
+.nav {
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0c2340;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: #0c2340;
+    font-weight: 500;
+    padding: 10px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #ffd700;
+}
+
+/* Hero section styles */
+.hero {
+    background-image: linear-gradient(rgba(12,35,64,0.8), rgba(12,35,64,0.8)), url('images/school-building.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #fff;
+    text-align: center;
+    padding: 100px 0;
+    min-height: 80vh;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 24px;
+    color: #ffd700;
+    margin-bottom: 30px;
+}
+
+/* Features section styles */
+.features {
+    background-color: #f8f9fa;
+    padding: 80px 0;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card h3 {
+    color: #0c2340;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.feature-card ul {
+    list-style-type: none;
+}
+
+.feature-card li {
+    margin: 10px 0;
+    padding-left: 25px;
+    position: relative;
+}
+
+.feature-card li::before {
+    content: "•";
+    color: #ffd700;
+    position: absolute;
+    left: 0;
+}
+
+/* Admission section styles */
+.admission {
+    padding: 80px 0;
+    text-align: center;
+}
+
+.admission h2 {
+    color: #0c2340;
+    margin-bottom: 40px;
+}
+
+.class-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.class-card {
+    background-color: #f8f9fa;
+    padding: 25px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.class-card:hover {
+    transform: translateY(-5px);
+}
+
+.class-card h3 {
+    color: #0c2340;
+    margin-bottom: 10px;
+}
+
+/* Footer styles */
+.footer {
+    background-color: #0c2340;
+    color: #fff;
+    padding: 50px 0;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 300px;
+    margin-bottom: 30px;
+}
+
+.footer-section h3 {
+    color: #ffd700;
+    margin-bottom: 20px;
+}
+
+.social-links a {
+    font-size: 24px;
+    margin-right: 20px;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #ffd700;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+    }
+
+    .nav-links {
+        margin-top: 20px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .hero p {
+        font-size: 18px;
+    }
+
+    .features-grid,
+    .class-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-content {
+        flex-direction: column;
+    }
+}
+    </style>
+
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="top-bar">
+                <div class="quick-links">
+                    <a href="#">PAY FEES</a>
+                    <a href="#">WHAT PARENTS SAY</a>
+                    <a href="applynow.html">ADMISSION</a>
+                    <a href="login.html">LOGIN</a>
+                    <a href="register.html">REGISTER</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="container nav-container">
+            <div class="logo">Maharishi Vidya Mandir</div>
+            <div class="nav-links">
+                <a href="#">HOME</a>
+                <a href="#">ABOUT US</a>
+                <a href="#">FACILITIES</a>
+                <a href="#">ACADEMIC</a>
+                <a href="#">ACHIEVERS</a>
+                <a href="#">RESULTS</a>
+                <a href="#">EVENTS</a>
+                <a href="#">CONTACT US</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Welcome to Maharishi Vidya Mandir</h1>
+            <p>Nurturing Excellence, Building Character, Shaping Future Leaders</p>
+            
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>HOLISTIC LEARNING</h3>
+                    <ul>
+                        <li>Integrated Learning</li>
+                        <li>Emotional Growth</li>
+                        <li>Personalized Education</li>
+                        <li>Community Engagement</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>CONFIDENCE BUILDING</h3>
+                    <ul>
+                        <li>Public Speaking</li>
+                        <li>Leadership Roles</li>
+                        <li>Positive Feedback</li>
+                        <li>Skill Workshops</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>SAFETY & SECURITY</h3>
+                    <ul>
+                        <li>Police verified staff</li>
+                        <li>Safe arrival and dispersal</li>
+                        <li>CCTV Surveillance</li>
+                        <li>First Aid facilities</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="admission">
+        <div class="container">
+            <h2>ADMISSIONS OPEN!</h2>
+            <div class="class-grid">
+                <div class="class-card">
+                    <h3>Pre Nursery</h3>
+                    <p>2.5 Years to 3.5 Years</p>
+                </div>
+                <div class="class-card">
+                    <h3>Nursery</h3>
+                    <p>3.5 Years to 4.5 Years</p>
+                </div>
+                <div class="class-card">
+                    <h3>Kindergarten</h3>
+                    <p>4.5 Years to 5.5 Years</p>
+                </div>
+                <div class="class-card">
+                    <h3>Class I to XII</h3>
+                    <p>As per class attended in previous school</p>
+                </div>
+            </div>
+            <a href="applynow.html" class="btn">Apply Now</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: maharishividyamandir@gmail.com</p>
+                <p>Phone: +91-9693697350</p>
+                <p>Address: khargone Madhya pradesh</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <p><a href="#">About Us</a></p>
+                <p><a href="#">Facilities</a></p>
+                <p><a href="#">Admissions</a></p>
+                <p><a href="#">Contact</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-image: linear-gradient(rgba(12,35,64,0.9), rgba(12,35,64,0.9)), url('images/classroom.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            color: #0c2340;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #0c2340;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .login-btn {
+            background: #ffd700;
+            color: #0c2340;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: #0c2340;
+            color: #fff;
+        }
+
+        .links {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .links a {
+            color: #0c2340;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 14px;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Loading animation */
+        .loader {
+            display: none;
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #0c2340;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Admin Login</h2>
+        <form id="loginForm" onsubmit="return handleLogin(event)">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <span class="error" id="username-error"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <span class="error" id="password-error"></span>
+            </div>
+            
+            <button type="submit" class="login-btn">
+                <span id="loginText">Login</span>
+                <div class="loader" id="loginLoader"></div>
+            </button>
+        </form>
+        <div class="links">
+            <a href="register.html">Register</a>
+            <a href="#">Forgot Password?</a>
+        </div>
+    </div>
+
+    <script>
+        // Sample admin credentials (In real application, these would be in a secure database)
+        const validCredentials = [
+            { username: 'admin', password: 'admin123' },
+            { username: 'user1', password: 'password123' }
+        ];
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.style.display = 'block';
+            errorElement.textContent = message;
+        }
+
+        function hideError(elementId) {
+            document.getElementById(elementId).style.display = 'none';
+        }
+
+        function showLoading() {
+            document.getElementById('loginText').style.display = 'none';
+            document.getElementById('loginLoader').style.display = 'block';
+        }
+
+        function hideLoading() {
+            document.getElementById('loginText').style.display = 'block';
+            document.getElementById('loginLoader').style.display = 'none';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+
+            // Reset error messages
+            hideError('username-error');
+            hideError('password-error');
+
+            // Get form values
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            // Validate inputs
+            if (!username) {
+                showError('username-error', 'Please enter username');
+                return false;
+            }
+
+            if (!password) {
+                showError('password-error', 'Please enter password');
+                return false;
+            }
+
+            // Show loading
+            showLoading();
+
+            // Simulate API call delay
+            setTimeout(() => {
+                // Check credentials
+                const isValid = validCredentials.some(
+                    cred => cred.username === username && cred.password === password
+                );
+
+                if (isValid) {
+                    // Store login status
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('username', username);
+                    
+                    // Redirect to dashboard
+                    window.location.href = 'afterlogin.html';
+                } else {
+                    hideLoading();
+                    showError('password-error', 'Invalid username or password');
+                }
+            }, 1000);
+
+            return false;
+        }
+
+        // Check if user is already logged in
+        // window.onload = function() {
+        //     if (localStorage.getItem('isLoggedIn') === 'true') {
+        //         window.location.href = 'afterlogin.html';
+        //     }
+        // }
+    </script>
+</body>
+</html>
